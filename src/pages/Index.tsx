@@ -127,10 +127,8 @@ const Index = () => {
             {view === "overview" && (
               <OverviewView
                 mode={mode}
-                triage={triage}
                 onOpenAssistant={() => setAssistantOpen(true)}
                 assistantOpen={assistantOpen}
-                externalEvents={externalEvents}
               />
             )}
 
@@ -216,10 +214,8 @@ function MonitorView({ mode }: { mode: Mode }) {
 
 interface OverviewProps {
   mode: Mode;
-  triage: TriageResult | null;
   onOpenAssistant: () => void;
   assistantOpen: boolean;
-  externalEvents: FeedItem[];
 }
 
 function OverviewView({ mode, onOpenAssistant, assistantOpen }: OverviewProps) {
