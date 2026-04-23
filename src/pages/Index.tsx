@@ -8,6 +8,7 @@ import { LiveFeed, type FeedItem } from "@/components/rcrs/LiveFeed";
 import { NavigationPanel } from "@/components/rcrs/NavigationPanel";
 import { EmergencyServices } from "@/components/rcrs/EmergencyServices";
 import { AlarmOverlay } from "@/components/rcrs/AlarmOverlay";
+import { HospitalsPanel } from "@/components/rcrs/HospitalsPanel";
 import { toast } from "sonner";
 
 type Mode = "safe" | "warning" | "emergency";
@@ -147,6 +148,8 @@ const Index = () => {
             <NavigationPanel emergency={mode === "emergency"} />
             <EmergencyServices active={mode === "emergency"} etaMinutes={triage?.est_response_minutes || 6} />
           </div>
+
+          <HospitalsPanel />
         </div>
 
         {/* Right column — feed + analytics */}
