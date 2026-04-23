@@ -74,6 +74,7 @@ export function LiveFeed({ emergency, externalEvents }: Props) {
     })
   );
   const [filter, setFilter] = useState<"all" | FeedCategory>("all");
+  const [menuOpen, setMenuOpen] = useState(false);
   const lastExternalRef = useRef<string | null>(null);
 
   // Auto-stream events
