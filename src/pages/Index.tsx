@@ -330,35 +330,5 @@ function Pill({
   );
 }
 
-function Vital({
-  label,
-  value,
-  pct,
-  tone,
-}: {
-  label: string;
-  value: string;
-  pct: number;
-  tone: "safe" | "warning" | "emergency";
-}) {
-  const c = tone === "emergency" ? "bg-emergency" : tone === "warning" ? "bg-warning" : "bg-success";
-  return (
-    <div className="mb-3 last:mb-0">
-      <div className="flex justify-between text-xs mb-1">
-        <span className="text-muted-foreground">{label}</span>
-        <span className="font-mono font-semibold">{value}</span>
-      </div>
-      <div className="h-1.5 rounded-full bg-secondary overflow-hidden">
-        <div
-          className={`h-full ${c} transition-all`}
-          style={{
-            width: `${pct}%`,
-            boxShadow: `0 0 10px hsl(var(--${tone === "emergency" ? "emergency" : tone === "warning" ? "warning" : "success"}) / 0.7)`,
-          }}
-        />
-      </div>
-    </div>
-  );
-}
 
 export default Index;
