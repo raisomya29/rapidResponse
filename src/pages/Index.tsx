@@ -151,7 +151,7 @@ const Index = () => {
 
         {/* Right column — feed + analytics */}
         <div className="col-span-12 lg:col-span-3 space-y-4 lg:space-y-6">
-          <LiveFeed emergency={mode === "emergency"} />
+          <LiveFeed emergency={mode === "emergency"} externalEvents={externalEvents} />
           <AnalyticsPanel />
         </div>
       </section>
