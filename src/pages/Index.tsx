@@ -4,7 +4,7 @@ import { Building3D } from "@/components/rcrs/Building3D";
 import { SOSButton } from "@/components/rcrs/SOSButton";
 import { AIAssistant, type TriageResult } from "@/components/rcrs/AIAssistant";
 import { AnalyticsPanel } from "@/components/rcrs/AnalyticsPanel";
-import { LiveFeed } from "@/components/rcrs/LiveFeed";
+import { LiveFeed, type FeedItem } from "@/components/rcrs/LiveFeed";
 import { NavigationPanel } from "@/components/rcrs/NavigationPanel";
 import { EmergencyServices } from "@/components/rcrs/EmergencyServices";
 import { AlarmOverlay } from "@/components/rcrs/AlarmOverlay";
@@ -16,6 +16,7 @@ const Index = () => {
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [triage, setTriage] = useState<TriageResult | null>(null);
   const [now, setNow] = useState(new Date());
+  const [externalEvents, setExternalEvents] = useState<FeedItem[]>([]);
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
@@ -29,12 +30,28 @@ const Index = () => {
     return "safe";
   }, [triage]);
 
+  const pushFeed = (event: Omit<FeedItem, "id" | "ts">) => {
+    setExternalEvents((prev) =>
+      [{ ...event, id: Math.random().toString(36).slice(2), ts: new Date() }, ...prev].slice(0, 20)
+    );
+  };
+
   const onTriage = (r: TriageResult) => {
     setTriage(r);
+    const tone = r.severity === "CRITICAL" ? "emergency" : r.severity === "MODERATE" ? "warning" : "success";
+    pushFeed({
+      category: "ai",
+      tone,
+      text: `AI decision · ${r.severity} · ${r.condition}`,
+      meta: r.ambulance_needed ? `Ambulance ETA ${r.est_response_minutes}m` : "No dispatch required",
+    });
     if (r.severity === "CRITICAL") {
       toast.error(`CRITICAL · ${r.condition}`, { description: "Ambulance dispatched. Follow on-screen steps." });
+      pushFeed({ category: "location", tone: "emergency", text: "User location pinned for responders", meta: "L03 · Corridor East" });
+      pushFeed({ category: "movement", tone: "warning", text: "Crowd clearing route to L03", meta: "Auto-routed by AI" });
     } else if (r.severity === "MODERATE") {
       toast.warning(`MODERATE · ${r.condition}`, { description: "Monitoring activated." });
+      pushFeed({ category: "movement", tone: "warning", text: "Increased monitoring on user", meta: "Cam-07 tracking" });
     } else {
       toast.success(`NORMAL · ${r.condition}`, { description: "No emergency. Suggestions provided." });
     }
