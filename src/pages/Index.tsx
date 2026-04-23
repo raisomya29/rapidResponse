@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Activity, Heart, Hotel, Shield, Sparkles, Users, Wifi } from "lucide-react";
+import { Activity, Brain, Hotel, MapPin, Radio, Shield, Siren, Sparkles, Users, Wifi } from "lucide-react";
 import { Building3D } from "@/components/rcrs/Building3D";
 import { SOSButton } from "@/components/rcrs/SOSButton";
 import { AIAssistant, type TriageResult } from "@/components/rcrs/AIAssistant";
@@ -222,74 +222,85 @@ interface OverviewProps {
   externalEvents: FeedItem[];
 }
 
-function OverviewView({ mode, triage, onOpenAssistant, assistantOpen, externalEvents }: OverviewProps) {
+function OverviewView({ mode, onOpenAssistant, assistantOpen }: OverviewProps) {
+  const features = [
+    { icon: Hotel, title: "3D Live Monitor", desc: "Real-time building telemetry with lighting that reflects current state." },
+    { icon: Brain, title: "AI Triage", desc: "Voice or text symptom analysis classifies severity in seconds." },
+    { icon: Radio, title: "Incident Feed", desc: "Streaming AI decisions, location pings, and movement alerts." },
+    { icon: MapPin, title: "Smart Navigation", desc: "Auto-routes occupants to the nearest safe zone or exit." },
+    { icon: Siren, title: "Emergency Dispatch", desc: "Direct coordination with responders and live ETA tracking." },
+    { icon: Shield, title: "Hospitals & Analytics", desc: "Nearby trauma centers and performance history at a glance." },
+  ];
+
   return (
-    <section className="grid grid-cols-12 gap-4 lg:gap-6 animate-fade-up">
-      {/* Left column — SOS + AI */}
-      <div className="col-span-12 lg:col-span-3 space-y-4 lg:space-y-6">
-        <div className="glass-panel rounded-3xl p-6 text-center relative overflow-hidden">
+    <section className="max-w-5xl mx-auto space-y-8 animate-fade-up">
+      {/* Hero introduction */}
+      <div className="glass-panel rounded-3xl p-8 sm:p-12 text-center relative overflow-hidden">
+        <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full bg-primary/15 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-16 -right-16 w-64 h-64 rounded-full bg-emergency/15 blur-3xl pointer-events-none" />
+        <div className="relative">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/40 bg-primary/10 mb-4">
+            <Sparkles className="w-3 h-3 text-primary" />
+            <span className="font-mono text-[10px] tracking-widest text-primary">RAPID CRISIS RESPONSE SYSTEM</span>
+          </div>
+          <h1 className="font-display text-3xl sm:text-5xl font-bold tracking-tight mb-4">
+            AI-powered safety for hotels, malls & hospitality
+          </h1>
+          <p className="text-sm sm:text-base text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            RCRS unifies smart SOS, AI triage, live 3D monitoring, and emergency dispatch into one neon command center —
+            built to detect, decide, and respond in seconds.
+          </p>
+        </div>
+      </div>
+
+      {/* SOS + Describe symptoms */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-6">
+        <div className="glass-panel rounded-3xl p-8 text-center relative overflow-hidden">
           <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-emergency/20 blur-3xl pointer-events-none" />
           <p className="font-mono text-[10px] tracking-widest text-muted-foreground mb-1">SMART SOS</p>
-          <h2 className="font-display text-xl font-semibold mb-4">Emergency activation</h2>
+          <h2 className="font-display text-xl font-semibold mb-6">Emergency activation</h2>
           <SOSButton onTrigger={onOpenAssistant} active={assistantOpen || mode === "emergency"} />
-          <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
+          <p className="text-xs text-muted-foreground mt-6 leading-relaxed">
             Auto-triggers on panic voice or sudden fall. Tap to launch AI triage.
           </p>
         </div>
 
         <button
           onClick={onOpenAssistant}
-          className="w-full glass-panel rounded-2xl p-4 flex items-center gap-3 text-left hover:border-primary/50 transition-colors"
+          className="glass-panel rounded-3xl p-8 text-left hover:border-primary/60 transition-colors relative overflow-hidden group"
         >
-          <div className="w-10 h-10 rounded-xl bg-primary/15 grid place-items-center">
-            <Sparkles className="w-5 h-5 text-primary" />
+          <div className="absolute -top-8 -left-8 w-32 h-32 rounded-full bg-primary/20 blur-3xl pointer-events-none" />
+          <p className="font-mono text-[10px] tracking-widest text-muted-foreground mb-1">AI ASSISTANT</p>
+          <h2 className="font-display text-xl font-semibold mb-6">Describe symptoms</h2>
+          <div className="w-20 h-20 rounded-2xl bg-primary/15 grid place-items-center mx-auto group-hover:bg-primary/25 transition-colors">
+            <Sparkles className="w-10 h-10 text-primary" />
           </div>
-          <div className="flex-1">
-            <p className="font-display font-semibold text-sm">Describe symptoms</p>
-            <p className="text-xs text-muted-foreground">AI assesses any condition · voice or text</p>
-          </div>
+          <p className="text-xs text-muted-foreground mt-6 leading-relaxed text-center">
+            AI assesses any condition · voice or text. Get instant triage and next steps.
+          </p>
         </button>
-
-        <div className="glass-panel rounded-2xl p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <Heart className="w-4 h-4 text-emergency" />
-            <h3 className="font-display font-semibold text-sm">Vitals stream</h3>
-          </div>
-          <Vital label="Heart rate" value="72 bpm" pct={60} tone="safe" />
-          <Vital label="O₂ saturation" value="98%" pct={92} tone="safe" />
-          <Vital
-            label="Stress index"
-            value={mode === "emergency" ? "84" : "21"}
-            pct={mode === "emergency" ? 84 : 21}
-            tone={mode === "emergency" ? "emergency" : "safe"}
-          />
-        </div>
       </div>
 
-      {/* Center column */}
-      <div className="col-span-12 lg:col-span-6 space-y-4 lg:space-y-6">
-        <div className={`glass-panel rounded-3xl p-2 sm:p-3 relative overflow-hidden ${mode === "emergency" ? "animate-flash-border" : ""}`}>
-          <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
-            <Hotel className="w-4 h-4 text-primary" />
-            <span className="font-mono text-[10px] tracking-widest text-muted-foreground">3D LIVE MONITOR</span>
-          </div>
-          <div className="h-[480px] sm:h-[540px] rounded-2xl overflow-hidden relative">
-            <Building3D mode={mode} />
-          </div>
+      {/* Feature overview */}
+      <div className="glass-panel rounded-3xl p-6 sm:p-8">
+        <div className="flex items-center gap-2 mb-6">
+          <Activity className="w-4 h-4 text-primary" />
+          <p className="font-mono text-[10px] tracking-widest text-muted-foreground">SYSTEM CAPABILITIES</p>
         </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
-          <NavigationPanel emergency={mode === "emergency"} />
-          <EmergencyServices active={mode === "emergency"} etaMinutes={triage?.est_response_minutes || 6} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {features.map((f) => (
+            <div key={f.title} className="rounded-2xl border border-border/40 bg-card/40 p-4 hover:border-primary/40 transition-colors">
+              <div className="w-9 h-9 rounded-lg bg-primary/15 grid place-items-center mb-3">
+                <f.icon className="w-4 h-4 text-primary" />
+              </div>
+              <h3 className="font-display font-semibold text-sm mb-1">{f.title}</h3>
+              <p className="text-xs text-muted-foreground leading-relaxed">{f.desc}</p>
+            </div>
+          ))}
         </div>
-
-        <HospitalsPanel />
-      </div>
-
-      {/* Right column */}
-      <div className="col-span-12 lg:col-span-3 space-y-4 lg:space-y-6">
-        <LiveFeed emergency={mode === "emergency"} externalEvents={externalEvents} />
-        <AnalyticsPanel />
+        <p className="text-[11px] text-muted-foreground mt-6 text-center font-mono tracking-wider">
+          USE THE SIDEBAR TO OPEN ANY MODULE
+        </p>
       </div>
     </section>
   );
