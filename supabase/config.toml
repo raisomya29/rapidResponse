@@ -1,0 +1,4 @@
+project_id = "vrxcnmzapptyqkwkncfj"
+
+[functions.triage]
+verify_jwt = false
