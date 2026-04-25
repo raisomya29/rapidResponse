@@ -23,5 +23,4 @@ This reduces response time and improves accessibility to emergency services.
   *CSS3
   *JavaScript
 Netlify (Deployment)
-🌐 Live Demo
-👉 https://rapidresponse123.netlify.app/⁠�
+
