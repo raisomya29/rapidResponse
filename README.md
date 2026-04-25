@@ -1,4 +1,4 @@
-# 🚑 Rapid Crisis Response System (RCRS)
+#Rapid Crisis Response System (RCRS)
 
 ## 📌 Overview
 Rapid Crisis Response System (RCRS) is a web-based platform designed to provide quick assistance during emergency situations. It helps users access nearby hospitals, navigate efficiently, and take immediate action using a simple interface.
